@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom PC Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .build-card {
+            width: 100%;
+            max-width: 320px;
+            height: 140px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .promo-section {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            padding: 2rem;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .builder-header {
+            border-radius: 15px 15px 0px 0px;
+            background-color: rgba(128, 255, 0, 0.847);
+            padding: 1rem;
+        }
+        
+        .form-select-custom {
+            border: 2px solid #80ff00;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+        
+        .save-build-btn {
+            background-color: #80ff00;
+            border: none;
+            padding: 5px;
+            height: 60px;
+            width: 200px;
+            font-size: larger;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 991.98px) {
+            .border-right-lg {
+                border-right: none !important;
+            }
+            
+            .promo-section h1 {
+                font-size: 2rem !important;
+            }
+            
+            .promo-section h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            .promo-section p, .promo-section li {
+                font-size: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .container {
+                margin-top: 100px !important;
+            }
+            
+            .promo-section {
+                padding: 1rem;
+            }
+            
+            .promo-section h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            .builder-header {
+                font-size: 1.2rem !important;
+            }
+            
+            .form-select-custom {
+                padding: 8px;
+            }
+            
+            .save-build-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include "core/NavbarTop.html" %}
+    <div class="container" style="margin-top: 70px;">
+        <div class="row">
+            <!-- Left Column - Build Cards and Promo -->
+            <div class="col-lg-6 border-right-lg" style="border-right: solid 1px rgb(135, 135, 135);">
+                <div class="row">
+                    <!-- Build Cards -->
+                    <div class="col-md-6">
+                        {% block build_card %}
+                        {% for customPcData in customPcData %}
+                        <div class="card shadow-sm build-card mx-auto">
+                            <div class="card-body p-2">
+                                <div class="row d-flex justify-content-center align-items-center">
+                                    <div class="col-4 d-flex justify-content-center">
+                                        <img src="{{ customPcData.cabinet.productImages.url }}" alt="Cabinet Image"
+                                            style="height: 100px; width: auto; border-radius: 5px; object-fit: cover;">
+                                    </div>
+                                    <div class="col-8">
+                                        <h6 class="mb-1" style="font-weight: bold; font-size: 1rem; color: #333;">{{customPcData}}</h6>
+                                        <p class="mb-1" style="font-size: 0.9rem; color: #000000; font-weight: 600;">Total:
+                                            <span style="font-weight: 700; color: rgb(179, 0, 255);">₹{{ customPcData.total_price }}</span>
+                                        </p>
+                                        <div class="mt-2">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <a href="{% url 'custompcheckout' customPcData.id %}" class="btn btn-primary btn-sm"
+                                                    style="border-radius: 5px; font-weight: 600;">PAY</a>
+                                                <a href="{% url 'buildDelete' customPcData.id %}" class="btn btn-danger btn-sm"
+                                                    style="border-radius: 5px; font-weight: 600;">Delete</a>
+                                                <a href="{% url 'listbuilddata' customPcData.id %}" class="btn btn-warning btn-sm"
+                                                    style="border-radius: 5px; font-weight: 600;">See</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endblock build_card %}
+                    </div>
+                    
+                    <!-- Promo Section -->
+                    <div class="col-md-6">
+                        {% block show_build_data %}
+                        <section class="promo-section">
+                            <h1 style="font-size: 2.5rem; color: #00e6e6;">🚀 Fastest 3-Hour PC Build Delivery</h1>
+                            <h2 style="font-size: 1.5rem; margin-top: 10px;">Only at <span style="color: #ff3c00;">Instax.PC</span>!</h2>
+                            
+                            <p style="font-size: 1.1rem; max-width: 800px; margin: 30px auto;">
+                                Need a high-performance custom PC <strong>fast</strong>? We build and deliver your dream machine in just 
+                                <strong>3 hours</strong> — no waiting, no hassle!
+                            </p>
+                            
+                            <ul style="list-style: none; padding: 0; font-size: 1.1rem; line-height: 1.8;">
+                                <li>🖥️ Choose your components</li>
+                                <li>🔧 Our expert builders assemble it instantly</li>
+                                <li>🚚 Delivered to your doorstep in 3 hours</li>
+                            </ul>
+                            
+                            <p style="font-size: 1.1rem; margin-top: 30px;">
+                                Experience the future of PC building with <strong style="color: #00e6e6;">Instax.PC</strong> — 
+                                fast, reliable, and powerful.
+                            </p>
+                        </section>
+                        {% endblock show_build_data %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - PC Builder Form -->
+            <div class="col-lg-6">
+                {% block build_selection_data %}
+                <form method="post">
+                    <div class="card shadow" style="border: none;"> {% csrf_token %}
+                        <div class="builder-header">
+                            <div class="d-flex justify-content-center align-items-center gap-1"
+                                style="font-size:150%; font-weight: 700;">
+                                <i class="bi bi-tools"></i>
+                                <span>Custom PC Builder</span>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center mt-2"
+                                style="font-weight: 600; color: rgb(102, 102, 102); font-size: large;">
+                                <p class="text-center">Select your components and craft your ultimate gaming machine</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-motherboard"></i> Choose Your MotherBoard</label>
+                                <select name="motherboard_id" class="form-select form-select-custom" required>
+                                    {% for MotherboardData in MbData %}
+                                    <option value="{{ MotherboardData.id }}">{{ MotherboardData.productName }} - ₹{{ MotherboardData.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-cpu"></i> Choose Your Processor</label>
+                                <select name="processor_id" class="form-select form-select-custom" required>
+                                    {% for ProcessorData in ProsData %}
+                                    <option value="{{ ProcessorData.id }}">{{ ProcessorData.productName }} - ₹{{ ProcessorData.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-memory"></i> Choose Your Ram</label>
+                                <select name="ram_id" class="form-select form-select-custom" required>
+                                    {% for Ram in RamData %}
+                                    <option value="{{ Ram.id }}">{{ Ram.productName }} - ₹{{ Ram.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-device-hdd"></i> Choose Your Hard Disk</label>
+                                <select name="hdd_id" class="form-select form-select-custom" required>
+                                    {% for Hdd in HddData %}
+                                    <option value="{{ Hdd.id }}">{{ Hdd.productName }} - ₹{{ Hdd.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-device-ssd-fill"></i> Choose Your SSD</label>
+                                <select name="ssd_id" class="form-select form-select-custom" required>
+                                    {% for Ssd in SsdData %}
+                                    <option value="{{ Ssd.id }}">{{ Ssd.productName }} - ₹{{ Ssd.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-plug"></i> Choose Your Power Supply</label>
+                                <select name="power_id" class="form-select form-select-custom" required>
+                                    {% for Power in PowerSupplyData %}
+                                    <option value="{{ Power.id }}">{{ Power.productName }} - ₹{{ Power.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-gpu-card"></i> Choose Your Graphics Card</label>
+                                <select name="graphics_id" class="form-select form-select-custom" required>
+                                    {% for Graphics in GraphicsCardData %}
+                                    <option value="{{ Graphics.id }}">{{ Graphics.productName }} - ₹{{ Graphics.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-fan"></i> Choose Your Coolers</label>
+                                <select name="cooler_id" class="form-select form-select-custom" required>
+                                    {% for Cooler in CoolersData %}
+                                    <option value="{{ Cooler.id }}">{{ Cooler.productName }} - ₹{{ Cooler.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" style="font-weight: bold; font-size: 1.1rem;"><i
+                                        class="bi bi-pc"></i> Choose Your Cabinet</label>
+                                <select name="cabinet_id" class="form-select form-select-custom" required>
+                                    {% for Cabinet in cabinetData %}
+                                    <option value="{{ Cabinet.id }}">{{ Cabinet.productName }} - ₹{{ Cabinet.price }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="save-build-btn">
+                                    <i class="bi bi-lightning-charge"></i> SAVE MY BUILD
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {% endblock build_selection_data %}
+            </div>
+        </div>
+    </div>
+    {% include "core/footer.html" %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+{% extends "core/UserCart.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block navbar_box %}
+    <nav class="navbar fixed-top bg-body-tertiary bg-primary">
+        <div class="container-fluid">
+            <a href="{% url "addcart" %}" class="btn btn-light" style="color: black; font-weight: 500; border: 1px solid #ccc; padding: 5px 10px; text-decoration: none; border-radius: 5px;"><i>Go Back </i></a>
+          <span class="navbar-brand mx-auto" style="color: white; font-size: 20px; font-weight: 600;">INSTAX.PC <i>Checkout</i></span>
+        </div>
+    </nav>
+    {% endblock navbar_box %}
+    {% block order_title %}Checkout Your Order{% endblock order_title %}
+    {% block order_box %}
+
+<form action="{% url 'custompcheckoutpayment' %}" method = 'post'> {% csrf_token %}
+    <div class="card">
+        <div class="card-body p-2" style="background-color: #2874F0; color: white;">
+            <label for="">Choose Address </label>
+            
+        </div>
+        {% for address in address %}
+            <div class="card-body container p-2">
+                <div class="row">
+                    <div class="col-1 d-flex justify-content-center align-item-center">
+                        <input type="radio" name="address" id="" value={{address.id}} checked>
+                    </div>
+                    <div class="col-11">
+                        <div class="d-flex gap-1 mt-0">
+                            <label for="">{{ address.state }},</label>
+                            <label for="">{{ address.city }},</label>
+                            <label for="">{{ address.area }},</label>
+                            <label for="">{{ address.block }},</label>
+                            <label for="">{{ address.landmark}},</label>
+                            <label for="">{{ address.pin }},</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+        <div class="card d-flex justify-content-center align-items-center" style="height: 40px;">
+            <div class="cart-body d-flex justify-content-center align-items-center">
+                <div>
+                    <label for="" style="font-weight: 500;">No Address Found Pleas Add New Address </label>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url "adduseraddress" %}">
+        <div class="card d-flex justify-content-center align-items-center p-2 mt-2">
+            <div class="cart-body d-flex justify-content-center align-items-center">
+                <div>
+                    <label for="" style="font-weight: 500;">Add New Address</label>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            border: none;
+        }
+    
+        thead {
+            background-color: #f8f9fa;
+        }
+    
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    
+        th {
+            color: #333;
+            font-size: 16px;
+        }
+    
+        td {
+            font-size: 15px;
+        }
+    
+        tr:last-child td {
+            font-weight: bold;
+            background-color: #e9f5e9;
+            color: #2e7d32;
+            border-top: 2px solid #ccc;
+        }
+    
+        h2, h4 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 30px;
+        }
+    </style>
+    <div class="card mt-2">
+        <div class="card-body p-2" style="background-color: #2874F0; color: white;">
+            <label for="">Your Products</label>
+        </div>
+            <table border="1" cellpadding="10" class="mt-0">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Motherboard</td>
+                        <td>{{ customPcData.motherboard.productName }}</td>
+                        <td>₹{{ customPcData.motherboard.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Processor</td>
+                        <td>{{ customPcData.processor.productName }}</td>
+                        <td>₹{{ customPcData.processor.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td>{{ customPcData.ram.productName }}</td>
+                        <td>₹{{ customPcData.ram.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td>{{ customPcData.hdd.productName }}</td>
+                        <td>₹{{ customPcData.hdd.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>SSD</td>
+                        <td>{{ customPcData.ssd.productName }}</td>
+                        <td>₹{{ customPcData.ssd.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Power Supply</td>
+                        <td>{{ customPcData.power_supply.productName }}</td>
+                        <td>₹{{ customPcData.power_supply.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Graphics Card</td>
+                        <td>{{ customPcData.graphics_card.productName }}</td>
+                        <td>₹{{ customPcData.graphics_card.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Cooler</td>
+                        <td>{{ customPcData.cooler.productName }}</td>
+                        <td>₹{{ customPcData.cooler.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>Cabinet</td>
+                        <td>{{ customPcData.cabinet.productName }}</td>
+                        <td>₹{{ customPcData.cabinet.price }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Price</strong></td>
+                        <td colspan="2"><strong>₹{{ total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% block productInfo %}
+        {% endblock productInfo %}
+    </div>    
+
+    {% endblock order_box %}
+    
+    {% block not_show %}{% endblock not_show %}
+    
+    {% block order_btn %}
+    
+    {% if address %}
+    <div class="mt-1">
+        <div id="cashDiv" class="mb-2">
+            <input type="submit" value="Order Now" class="btn now-order-btn d-flex justify-content-center align-items-center" style="background-color: #FB641B; width: 100%; height: 40px; font-size: 15px; color: white; font-weight: 500  ;">
+        </div>
+    </div>
+    {% else %}
+    <div class="mt-1">
+        <div id="cashDiv" class="mb-2">
+            <input type="submit" value="Add Address First" class="btn now-order-btn d-flex justify-content-center align-items-center" style="background-color: #FB641B; width: 100%; height: 40px; font-size: 15px; color: white; font-weight: 500  ;">
+        </div>
+    </div>
+    {% endif %}
+</form>
+
+{% endblock order_btn %}
+</body>
+</html>

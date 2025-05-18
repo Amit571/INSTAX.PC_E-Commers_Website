@@ -1,0 +1,49 @@
+{% extends "core/UserProfileBase.html" %}
+{% block content_title %}Your Orders{% endblock content_title %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.min.css">
+<div class="container">
+    {% for orderData in customOrderData %}
+    <a href="{% url "userbuildorderdetail" orderData.id %}" style="text-decoration: none; color: black;">
+    <div class="card mb-2">
+        <div class="card-body row">
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <img src="{{orderData.cabinet.productImages.url}}" alt="" style="height: 50px; width: 70px;">
+            </div>
+            <div class="col-8">
+                <label for="">{{orderData}}</label>
+                <div class="d-flex flex-column">
+                    <label for="">Price 
+                        <span style="color: green; font-weight: 500;">₹{{orderData.total_price}}</span>
+                    </label>
+                    
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="text-center">
+                    <span style="font-weight: 600; font-size: 14px;">
+                        {% if orderData.status in '3,6,9,12,15' %}
+                            <span style="color: #ff9800;"><i class="bi bi-hourglass-split"></i> Order in Progress</span>
+                        {% elif orderData.status == 'Cancelled' %}
+                            <span style="color: #f44336;"><i class="bi bi-x-circle"></i> Order Cancelled</span>
+                        {% else %}
+                            <span style="color: #4caf50;">Order {{ orderData.status }}</span>
+                        {% endif %}
+                    </span>
+                    <div style="margin-top: 5px; font-size: 13px; color: #757575;">
+                        {% if orderData.status == 'Delivered' %}
+                            <i class="fas fa-calendar-alt"></i> {{ orderData.order_at }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+    {% empty %}
+    <div class="text-center m-3"> <label for="">Oops No Order Yet.......😒</label></div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

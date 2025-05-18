@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=M+PLUS+Rounded+1c&display=swap"
+        rel="stylesheet">
+
+    <title>Document</title>
+
+    <style>
+        .textdata {
+            font-family: "Fira Sans", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            color: white;
+        }
+
+        .button-52 {
+            font-size: 16px;
+            font-weight: 200;
+            letter-spacing: 1px;
+            padding: 13px 20px 13px;
+            outline: 0;
+            border: 2px solid black;
+            cursor: pointer;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            font-weight: 400;
+        }
+
+        .button-52:after {
+            content: "";
+            background-color: #ffe54c;
+            width: 100%;
+            z-index: -1;
+            position: absolute;
+            height: 100%;
+            top: 7px;
+            left: 7px;
+            transition: 0.2s;
+        }
+
+        .button-52:hover:after {
+            top: 0px;
+            left: 0px;
+        }
+
+        @media (min-width: 768px) {
+            .button-52 {
+                padding: 13px 50px 13px;
+            }
+        }
+    </style>
+</head>
+
+<body style="background-color: #FF7DB2;">
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="text-center">
+            <div>
+                <img src="{% static "images\debit-card.png" %}" alt="" height="400px" width="400px">
+            </div>
+            <div class="fs-1 mt-2 textdata">
+                <label>Payment Failed!</label>
+            </div>
+            <div class="textdata fs-3 textdata">
+                <label>Pleas try again latter.</label>
+            </div>
+            <a href="{% url "addcart" %}" class="textdata fs-5">
+                <button class="button-52 mt-3" role="button">Go Back</button>
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

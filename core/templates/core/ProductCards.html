@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <style>
+        .button-box {
+            border: solid 2px black;
+            border-radius: 10px;
+            height: 40px;
+            width: 100px;
+        }
+
+        .btn-main-box a {
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .price-h {
+            color: rgb(60, 187, 66);
+        }
+    </style>
+</head>
+<body style="margin-top:70px;">
+    <div class="text-center">
+        <span style="font-weight: 500; font-size: 20px;">Result For <span style="font-weight: 700;">'{{ categoryname }}'</span></span>
+    </div>
+    <hr>
+    {% include "core/NavbarTop.html" %}
+    <div class="container d-flex flex-wrap justify-content-start gap-2">
+        {% for p in pggd %}
+            <div class="card" style="display: inline-block; width: 200px; height: 330px; cursor: pointer;" onclick="window.location.href='{% url 'productdetail' p.id %}'">
+                <div class="card-body">
+                    <div class="row">
+                        <img src="{{ p.productImages.url }}" alt="" style="height:150px; width: 100%; object-fit: cover;">
+                    </div>
+                    <div class="row mt-1">
+                        <span>
+                            <i class="bi bi-stopwatch p-1" style="background-color: antiquewhite; font-size: 9px; font-weight: bold; border-radius: 15px;"> 
+                                {{ p.time }}
+                            </i>
+                        </span>
+                    </div>
+                    <div class="row mt-1" style="height: 50px; overflow: hidden;">
+                        <span style="font-weight: 500;">{{ p.productName }}</span>
+                    </div>
+                    <div class="row mt-1">
+                        <span style="font-size: 11px; color: gray; font-weight: 500;">{{ p.type }}</span>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6 d-flex justify-content-start align-items-center">
+                            <span style="font-size: 14px; font-weight: 500;"><span>₹</span>{{ p.price }}</span>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end align-items-center">
+                            <a href="{% url 'modelCart' p.id %}" style="text-decoration: none;">
+                                <div class="d-flex justify-content-center align-items-center" style="border: solid 2px green; padding: 3px; width: 50px; border-radius: 5px;">
+                                    <span class="text-center" style="font-size: 12px; color: green; font-weight: 500;">ADD</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No products found.</p>
+        {% endfor %}
+    </div>
+    {% include "core/footer.html" %}
+</body>
+</html>

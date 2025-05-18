@@ -1,0 +1,295 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container-fluid navbar-light p-2 fixed-top" style="background-color: #19598b;">
+    <div class="row align-items-center">
+        <!-- Brand/Logo -->
+        <div class="col-6 col-md-2 d-flex justify-content-start justify-content-md-center align-items-center">
+            <a class="navbar-brand" href="{% url 'index' %}"><span class="text-color">INSTAX.PC</span></a>
+            <!-- Mobile Menu Button -->
+            <button class="navbar-toggler d-md-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list text-color fs-4"></i>
+            </button>
+        </div>
+
+        <!-- Categories (Desktop) -->
+        <div class="col-md-1 d-none d-md-flex justify-content-center align-items-center">
+            <div class="dropdown hover-dropdown">
+                <a class="btn-hover-underline dropdown-toggle d-flex align-items-center gap-2" href="#" role="button">
+                    <span class="text-color" style="font-weight: 600; font-size:large;"><i class="bi bi-list"></i> Categories</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="{% url "userpcbuiltamd" %}">Custom Build</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Ram' %}">PC RAM</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Processor' %}">Processor</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Graphics Card' %}">Graphics Card</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Air Cooler' %}">Air Cooler</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Hard Disk' %}">Hard Disk</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Power Supply' %}">Power Supply</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Solid State Drive' %}">Solid State Drive</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Liquid Cooler' %}">Liquid Cooler</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Cabinet' %}">Cabinet</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Motherboard' %}">Motherboard</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Monitor' %}">Monitor</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Keyboard' %}">Keyboard</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Mouse' %}">Mouse</a></li>
+                    <li><a class="dropdown-item" href="{% url "productcard" 'Gaming Accessory' %}">Gaming Accessory</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search (Desktop) -->
+        <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center">
+            <div class="search-container w-100">
+                <form action="{% url "search" %}" method="POST"> 
+                    {% csrf_token %}
+                    <div class="search-box" style="height: 40px; border: solid 1px rgb(69, 181, 255);">
+                        <input type="text" class="search-input fs-6" placeholder="Search for products, brands and more" name="searchValue" style="font-weight: 600;">
+                        <button class="search-button" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Actions (Desktop) -->
+        <div class="col-md-3 d-none d-md-flex align-items-center justify-content-start gap-3">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-person-circle fs-4"></i>
+                    <span>{{request.user.first_name}}</span>
+                </div>
+            </a>
+
+            {% if count == 0 %}
+            <a href="{% url 'addcart' %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-cart fs-4"></i>
+                    <span>Cart</span>
+                </div>
+            </a>
+            {% else %}
+            <a href="{% url 'addcart' %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-cart-check fs-4"></i>
+                    <span>Cart</span>
+                </div>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-door-closed fs-4"></i>
+                    <span>Log-Out</span>
+                </div>
+            </a>
+
+            {% else %}
+            <a href="{% url 'signup' %}" class="text-decoration-none">
+                <div class="d-flex align-items-center justify-content-center gap-2 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-person-add fs-4"></i>
+                    <span>Sign-Up</span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-person fs-4"></i>
+                    <span>Login</span>
+                </div>
+            </a>
+
+            <a href="{% url "aboutsite" %}" class="text-decoration-none">
+                <div class="login-icon d-flex align-items-center justify-content-center gap-2 p-1 text-color" style="font-weight: 600; font-size:large;">
+                    <i class="bi bi-info-circle fs-4"></i>
+                    <span>About Us</span>
+                </div>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Mobile Collapse Content -->
+        <div class="col-12 d-md-none collapse navbar-collapse bg-white mt-2 rounded" id="navbarCollapse">
+            <!-- Mobile Search -->
+            <div class="search-container p-2">
+                <form action="{% url "search" %}" method="POST"> 
+                    {% csrf_token %}
+                    <div class="search-box" style="height: 40px; border: solid 1px rgb(69, 181, 255);">
+                        <input type="text" class="search-input fs-6" placeholder="Search for products..." name="searchValue" style="font-weight: 600;">
+                        <button class="search-button" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Mobile Categories -->
+            <div class="dropdown p-2">
+                <a class="btn btn-outline-primary w-100 text-start d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#mobileCategories" role="button">
+                    <span style="font-weight: 600;"><i class="bi bi-list"></i> Categories</span>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="mobileCategories">
+                    <div class="card card-body">
+                        <a class="dropdown-item py-2" href="{% url "userpcbuiltamd" %}">Custom Build</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Ram' %}">PC RAM</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Processor' %}">Processor</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Graphics Card' %}">Graphics Card</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Air Cooler' %}">Air Cooler</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Hard Disk' %}">Hard Disk</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Power Supply' %}">Power Supply</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Solid State Drive' %}">Solid State Drive</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Liquid Cooler' %}">Liquid Cooler</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Cabinet' %}">Cabinet</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Motherboard' %}">Motherboard</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Monitor' %}">Monitor</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Keyboard' %}">Keyboard</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Mouse' %}">Mouse</a>
+                        <a class="dropdown-item py-2" href="{% url "productcard" 'Gaming Accessory' %}">Gaming Accessory</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile User Actions -->
+            <div class="p-2">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-person-circle"></i> Profile
+                </a>
+                <a href="{% url 'addcart' %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-cart{% if count != 0 %}-check{% endif %}"></i> Cart
+                </a>
+                <a href="{% url 'logout' %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-door-closed"></i> Logout
+                </a>
+                {% else %}
+                <a href="{% url 'signup' %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-person-add"></i> Sign Up
+                </a>
+                <a href="{% url 'login' %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-person"></i> Login
+                </a>
+                <a href="{% url "aboutsite" %}" class="text-decoration-none d-block py-2">
+                    <i class="bi bi-info-circle"></i> About Us
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .navbar-light .navbar-brand {
+        color: var(--flipkart-blue);
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .navbar-light .navbar-nav .nav-link {
+        color: var(--flipkart-blue);
+    }
+
+    .navbar-light .navbar-nav .nav-link:hover {
+        color: #0056b3;
+    }
+
+    .btn-hover-underline {
+        position: relative;
+        text-decoration: none;
+        color: var(--flipkart-blue);
+    }
+
+    .btn-hover-underline::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 2px;
+        background-color: var(--flipkart-blue);
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .btn-hover-underline:hover::after {
+        transform: scaleX(1);
+    }
+
+    .hover-dropdown .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .hover-dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 5px;
+        opacity: 1;
+    }
+
+    .search-container {
+        flex-grow: 1;
+        margin: 0 20px;
+    }
+
+    .search-box {
+        display: flex;
+        height: 36px;
+        background-color: white;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .search-input {
+        flex-grow: 1;
+        border: none;
+        outline: none;
+        padding: 0 16px;
+        font-size: 14px;
+    }
+
+    .search-button {
+        width: 44px;
+        background-color: white;
+        border: none;
+        color: var(--flipkart-blue);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .text-color{
+        color: aliceblue;
+    }
+    
+    /* Mobile menu styles */
+    .navbar-toggler {
+        border: none;
+        background: transparent;
+    }
+    
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    
+    @media (max-width: 767.98px) {
+        .search-box {
+            height: 40px;
+        }
+        
+        #navbarCollapse {
+            border-top: 1px solid rgba(0,0,0,.1);
+            margin-top: 8px;
+        }
+    }
+</style>

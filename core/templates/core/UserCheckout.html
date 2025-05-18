@@ -1,0 +1,136 @@
+{% extends "core/UserCart.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+</head>
+<body>
+    {% block navbar_box %}
+    <nav class="navbar fixed-top bg-body-tertiary bg-primary">
+        <div class="container-fluid">
+            <a href="{% url "addcart" %}" class="btn btn-light" style="color: black; font-weight: 500; border: 1px solid #ccc; padding: 5px 10px; text-decoration: none; border-radius: 5px;"><i>Go Back </i></a>
+          <span class="navbar-brand mx-auto" style="color: white; font-size: 20px; font-weight: 600;">INSTAX.PC <i>Checkout</i></span>
+        </div>
+    </nav>
+    {% endblock navbar_box %}
+    {% block order_title %}Checkout Your Order{% endblock order_title %}
+    {% block order_box %}
+
+<form action="{% url "userpayment" %}" method = 'post'> {% csrf_token %}
+    <div class="card">
+        <div class="card-body p-2" style="background-color: #2874F0; color: white;">
+            <label for="">Choose Address</label>
+        </div>
+        {% for address in address %}
+            <div class="card-body container p-2">
+                <div class="row">
+                    <div class="col-1 d-flex justify-content-center align-item-center">
+                        <input type="radio" name="address" id="" value={{address.id}} checked>
+                    </div>
+                    <div class="col-11">
+                        <div class="d-flex gap-1 mt-0">
+                            <label for="">{{ address.state }},</label>
+                            <label for="">{{ address.city }},</label>
+                            <label for="">{{ address.area }},</label>
+                            <label for="">{{ address.block }},</label>
+                            <label for="">{{ address.landmark}},</label>
+                            <label for="">{{ address.pin }},</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+        <div class="card d-flex justify-content-center align-items-center" style="height: 40px;">
+            <div class="cart-body d-flex justify-content-center align-items-center">
+                <div>
+                    <label for="" style="font-weight: 500;">No Address Found Pleas Add New Address </label>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url "adduseraddress" %}">
+        <div class="card d-flex justify-content-center align-items-center p-2 mt-2">
+            <div class="cart-body d-flex justify-content-center align-items-center">
+                <div>
+                    <label for="" style="font-weight: 500;">Add New Address</label>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <div class="card mt-2">
+        <div class="card-body p-2" style="background-color: #2874F0; color: white;">
+            <label for="">Your Products</label>
+        </div>
+
+        {% for add in add %}
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-2  d-flex justify-content-center align-items-center p-0">
+                    <img src="{{add.product.productImages.url}}" alt="" style="height: 50px; width: 60px;">
+                </div>
+                <div class="col-10 container">
+                    <div class="row">
+                        <div class="col-8 d-flex justify-content-left align-items-center">
+                            <label for="">{{add.product.productName}}</label>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="">
+                                <label class="" for="" style="color: green;">₹{{add.product.price}}</label>
+                            </div>
+                            <div>
+                                <label for=""><span>Quantity({{add.quantity}}) Price </span>₹{{add.price_and_quantity_total}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% block productInfo %}
+        {% endblock productInfo %}
+    </div>
+
+    {% endblock order_box %}
+    
+    {% block not_show %}{% endblock not_show %}
+    
+    {% block order_btn %}
+    {% if paypal.value == paypal %}{% endif %}
+    
+    {% if address %}
+    <div class="mt-1">
+        <div id="cashDiv" class="mb-2">
+            <input type="submit" value="Order Now" class="btn now-order-btn d-flex justify-content-center align-items-center" style="background-color: #FB641B; width: 100%; height: 40px; font-size: 15px; color: white; font-weight: 500  ;">
+        </div>
+    </div>
+    {% else %}
+    <div class="mt-1">
+        <div id="cashDiv" class="mb-2">
+            <input type="submit" value="Add Address First" class="btn now-order-btn d-flex justify-content-center align-items-center" style="background-color: #FB641B; width: 100%; height: 40px; font-size: 15px; color: white; font-weight: 500  ;">
+        </div>
+    </div>
+    {% endif %}
+</form>
+
+    <script>
+        function toggleDiv(selectedDivId) {
+            // Hide all divs first
+            document.getElementById('cashDiv').style.display = 'none';
+            document.getElementById('paypalDiv').style.display = 'none';
+            document.getElementById('cardDiv').style.display = 'none';
+            
+            // Show the selected div
+            document.getElementById(selectedDivId).style.display = 'flex';
+        }
+    </script>
+    {% endblock order_btn %}
+</body>
+</html>

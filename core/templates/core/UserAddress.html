@@ -1,0 +1,68 @@
+{% extends "core/UserProfileBase.html" %}
+{% block content_title %} Manage Your Address {% endblock content_title %}
+
+{% block content %}
+<div class="container mb-3">
+    <a href="{% url "adduseraddress" %}">
+        <div class="card d-flex justify-content-center align-items-center" style="height: 40px;">
+            <div class="cart-body d-flex justify-content-center align-items-center">
+                <div>
+                    <label for="" style="font-weight: 500;">+ Add New Address</label>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="container mb-3" style="max-height: 700px; overflow:auto;">
+    {% for modelData in modelData %}
+    <div class="card mt-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-center align-items-center"  
+                style="border: solid 1px #F0F0F0; display: inline-block; height: 30px; width: 45px; background-color: #F0F0F0; border-radius: 5px; color: rgb(70, 71, 72);">
+                <label for="" style="font-size:13px;">{{ modelData.addressType }}</label>
+            </div>
+            <div class="row">
+                <div class="col-11">
+                    <div class="d-flex gap-3 mt-1">
+                        <div>
+                            <label for="" class="fw-bold">{{ modelData.fullName }}</label>
+                        </div>
+
+                        <div>
+                            <label for="" class="fw-bold">{{ modelData.mobile }}</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-0 mt-0">
+                        <label for="">{{ modelData.state }}/</label>
+                        <label for="">{{ modelData.city }}</label>
+                        <label for="">{{ modelData.area }}/</label>
+                        <label for="">{{ modelData.block }}/</label>
+                        <label for="">{{ modelData.landmark }}/</label>
+                        <label for="">{{ modelData.pin }}/</label>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-2">
+                        <div>
+                            <a href="{% url "edituseraddress" modelData.id %}" style="text-decoration: none;">
+                                <label for="">EDIT</label>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{% url "removeuseraddress" modelData.id %}" style="text-decoration: none;">
+                                <label for="">REMOVE</label>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% empty %}
+<p class="text-center">Opps, No Address Available ☹️</p>
+{% endfor %}
+
+    
+</div>
+{% endblock content %}

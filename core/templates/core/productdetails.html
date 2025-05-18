@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+
+    <style>
+        .tab-button.active {
+            border: solid 3px orange;
+            border-radius: 10px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% include "core/NavbarTop.html" %}
+    <div class="container" style="margin-top: 80px;">
+        <div class="row h-100">
+            <div class="col-6 p-2" style="border-right: solid 1px rgb(211, 211, 211); overflow-y: auto; height: 100%;">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <div>
+                        {% if product.productImages %}
+                        <img src="{{ product.productImages.url }}" class="tab-content" id="tab0"
+                            alt="{{ product.productName }}" style="height: 480px; width: 480px;">
+                        {% endif %}
+                        {% if product.productImages1 %}
+                        <img src="{{ product.productImages1.url }}" class="tab-content" id="tab1"
+                            alt="{{ product.productName }}" style="height: 480px; width: 480px;">
+                        {% endif %}
+                        {% if product.productImages2 %}
+                        <img src="{{ product.productImages2.url }}" class="tab-content" id="tab2"
+                            alt="{{ product.productName }}" style="height: 480px; width: 480px;">
+                        {% endif %}
+                        {% if product.productImages3 %}
+                        <img src="{{ product.productImages3.url }}" class="tab-content" id="tab3"
+                            alt="{{ product.productName }}" style="height: 480px; width: 480px;">
+                        {% endif %}
+                    </div>
+
+                    <div class="container d-flex justify-content-center align-items-center mt-2">
+                        <div class="container d-flex justify-content-center align-items-center gap-3">
+                            {% if product.productImages %}
+                            <img src="{{ product.productImages.url }}" alt="{{ product.productName }}"
+                                class="tab-button" onclick="showTab(0)"
+                                style="height: 70px; width: 70px; border-radius: 10px;">
+                            {% endif %}
+                            {% if product.productImages1 %}
+                            <img src="{{ product.productImages1.url }}" alt="{{ product.productName }}"
+                                class="tab-button" onclick="showTab(1)"
+                                style="height: 70px; width: 70px; border-radius: 10px;">
+                            {% endif %}
+                            {% if product.productImages2 %}
+                            <img src="{{ product.productImages2.url }}" alt="{{ product.productName }}"
+                                class="tab-button" onclick="showTab(2)"
+                                style="height: 70px; width: 70px; border-radius: 10px;">
+                            {% endif %}
+                            {% if product.productImages3 %}
+                            <img src="{{ product.productImages3.url }}" alt="{{ product.productName }}"
+                                class="tab-button" onclick="showTab(3)"
+                                style="height: 70px; width: 70px; border-radius: 10px;">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3" style="background-color: rgb(211, 211, 211); height: 1px;"></div>
+
+                <div class="container mt-4">
+                    <h3 style="font-family: 'Fira Sans', sans-serif;">Product Details</h3>
+                    <div class="d-flex justify-content-between" style="width: 150px;">
+                        <span><b>Brand</b></span>
+                        <span><b>{{ product.brand }}</b></span>
+                    </div>
+
+                    <div class="mt-2" style="text-align: justify;">
+                        <span><b>About this item</b></span>
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-secondary">{{ product.point1 }}</li>
+                            <li class="list-group-item list-group-item-secondary">{{ product.point2 }}</li>
+                            <li class="list-group-item list-group-item-secondary">{{ product.point3 }}</li>
+                            <li class="list-group-item list-group-item-secondary">{{ product.point4 }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 p-5" style="position: sticky; top: 80px; height: calc(100vh - 80px); overflow-y: auto;">
+                <h3 style="font-family: 'Fira Sans', sans-serif; font-weight: 600;">{{ product.productName }}</h3>
+
+                <div class="row mt-3">
+                    <span> <span style="background-color: #a1eba8; padding: 5px 10px 5px 10px; font-weight: 500; border-radius: 10px;"><i class="bi bi-truck"></i> <i>Your order just deliver in {{ product.time }} order now !</i></span> </span>
+                </div>
+
+                <a href="#" style="text-decoration: none;">
+                    <div class="mt-3">
+                        <a href="{% url 'samebrand' product.brand product.id %}" class="text-decoration-none"><h6 style="color: rgb(234, 215, 46);"><i>View All Product Match</i> <i
+                                class="bi bi-arrow-right-circle-fill"></i></h6></a>
+                    </div>
+                </a>
+
+                <div class="mt-3" style="background-color: rgb(211, 211, 211); height: 1px;"></div>
+
+                <div class="row mt-2">
+                    <div class="col-8 d-flex flex-column">
+                        <span style="font-size: 14px; color: gray; font-weight: 500;">{{ product.type }}</span>
+                        <span style="font-size: 18px; font-weight: 600;">₹{{ product.price }}</span>
+                        <span style="font-size: 14px; color: gray; font-weight: 500;">(Inclusive of all taxes)</span>
+                    </div>
+
+                    <div class="col-4 d-flex justify-content-end align-items-center gap-2">
+                        <a href="{% url 'modelCart' product.id %}" class="text-decoration-none">
+                            <div style="width: 100px; border-radius: 10px; background-color: green;"
+                                class="d-flex justify-content-center align-items-center p-1">
+                                <span class="text-center"
+                                    style="font-weight: 500; color: white; font-size: 18px;"><span><i
+                                            class="bi bi-bag"></i> </span>ADD</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="container mt-4">
+                    <h6>Why shop from InstaX?</h6>
+
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-end align-items-center">
+                            <img src="{% static 'images/fast-delivery.png' %}" alt="" style="height: 50px;">
+                        </div>
+                        <div class="col-10 d-flex flex-column" style="font-size: 13px;">
+                            <span style="font-weight: 500;">Super Fast Delivery</span>
+                            <span>Get your order delivered to your doorstep at the earliest from dark stores near
+                                you.</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-2 d-flex justify-content-end align-items-center">
+                            <img src="{% static 'images/best-price.png' %}" alt="" style="height: 50px;">
+                        </div>
+                        <div class="col-10 d-flex flex-column" style="font-size: 13px;">
+                            <span style="font-weight: 500;">Best Prices & Offers</span>
+                            <span>Best price destination with offers directly from the manufacturers.</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-2 d-flex justify-content-end align-items-center">
+                            <img src="{% static 'images/wide-products.png' %}" alt="" style="height: 50px;">
+                        </div>
+                        <div class="col-10 d-flex flex-column" style="font-size: 13px;">
+                            <span style="font-weight: 500;">Wide Assortment</span>
+                            <span>Choose from 5000+ products across food, personal care, household & other
+                                categories.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-4 align-items-center">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <span {% if message.tags %} style="background-color: #11B823; padding: 10px; color: white; font-size: 18px; border-radius: 10px;" {% endif %}><i class="bi bi-check-circle-fill"></i> {{message}}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showTab(index) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+
+            tabs.forEach((tab, i) => {
+                tab.style.display = i === index ? 'block' : 'none';
+            });
+
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        // Show the first tab on page load
+        window.onload = function () {
+            showTab(0);
+        };
+    </script>
+
+    {% include "core/footer.html" %}
+</body>
+
+</html>
