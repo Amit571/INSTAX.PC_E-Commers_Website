@@ -1,68 +1,185 @@
 {% extends "core/UserProfileBase.html" %}
-{% block content_title %} Manage Your Address {% endblock content_title %}
+{% block content_title %}Manage Your Addresses{% endblock content_title %}
 
 {% block content %}
-<div class="container mb-3">
-    <a href="{% url "adduseraddress" %}">
-        <div class="card d-flex justify-content-center align-items-center" style="height: 40px;">
-            <div class="cart-body d-flex justify-content-center align-items-center">
-                <div>
-                    <label for="" style="font-weight: 500;">+ Add New Address</label>
-                </div>
+<style>
+    .address-card {
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .address-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .address-type {
+        border: solid 1px #F0F0F0;
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #F0F0F0;
+        border-radius: 5px;
+        color: #464748;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+    .add-address-btn {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .add-address-btn:hover {
+        background-color: #f8f9fa;
+    }
+    .address-actions a {
+        color: #2874F0;
+        margin-right: 15px;
+        font-weight: 500;
+    }
+    .address-actions a:hover {
+        text-decoration: underline;
+    }
+    .address-details {
+        line-height: 1.6;
+    }
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #6c757d;
+    }
+    
+    /* Mobile scrolling highlight */
+    @media (max-width: 991.98px) {
+        #main-content.highlight {
+            animation: highlight 1.5s ease;
+            box-shadow: 0 0 0 2px rgba(40, 116, 240, 0.3);
+        }
+        @keyframes highlight {
+            0% { background-color: rgba(245, 250, 255, 0.8); }
+            100% { background-color: transparent; }
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .address-container {
+            max-height: none;
+            overflow: visible;
+        }
+        .address-details {
+            flex-direction: column;
+        }
+        .address-actions {
+            margin-top: 15px;
+        }
+        .mobile-stack {
+            flex-direction: column;
+            gap: 5px !important;
+        }
+        .mobile-nav-link {
+            cursor: pointer;
+        }
+    }
+</style>
+
+<div class="container mb-4">
+    <a href="{% url 'adduseraddress' %}" class="text-decoration-none text-dark mobile-nav-link">
+        <div class="card add-address-btn">
+            <div class="card-body p-2">
+                <i class="bi bi-plus-lg"></i> Add New Address
             </div>
         </div>
     </a>
 </div>
 
-<div class="container mb-3" style="max-height: 700px; overflow:auto;">
+<div class="container address-container">
     {% for modelData in modelData %}
-    <div class="card mt-2">
+    <div class="card address-card">
         <div class="card-body">
-            <div class="d-flex justify-content-center align-items-center"  
-                style="border: solid 1px #F0F0F0; display: inline-block; height: 30px; width: 45px; background-color: #F0F0F0; border-radius: 5px; color: rgb(70, 71, 72);">
-                <label for="" style="font-size:13px;">{{ modelData.addressType }}</label>
+            <div class="address-type">
+                {{ modelData.addressType }}
             </div>
             <div class="row">
-                <div class="col-11">
-                    <div class="d-flex gap-3 mt-1">
+                <div class="col-md-11">
+                    <div class="d-flex flex-md-row flex-column mobile-stack gap-3 mb-2">
                         <div>
-                            <label for="" class="fw-bold">{{ modelData.fullName }}</label>
+                            <span class="fw-bold">{{ modelData.fullName }}</span>
                         </div>
-
                         <div>
-                            <label for="" class="fw-bold">{{ modelData.mobile }}</label>
+                            <span class="fw-bold">{{ modelData.mobile }}</span>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-0 mt-0">
-                        <label for="">{{ modelData.state }}/</label>
-                        <label for="">{{ modelData.city }}</label>
-                        <label for="">{{ modelData.area }}/</label>
-                        <label for="">{{ modelData.block }}/</label>
-                        <label for="">{{ modelData.landmark }}/</label>
-                        <label for="">{{ modelData.pin }}/</label>
+                    <div class="address-details">
+                        <p class="mb-2">
+                            {{ modelData.block }}, {{ modelData.area }},<br>
+                            {{ modelData.landmark }}, {{ modelData.city }},<br>
+                            {{ modelData.state }} - {{ modelData.pin }}
+                        </p>
                     </div>
 
-                    <div class="d-flex gap-2 mt-2">
-                        <div>
-                            <a href="{% url "edituseraddress" modelData.id %}" style="text-decoration: none;">
-                                <label for="">EDIT</label>
-                            </a>
-                        </div>
-                        <div>
-                            <a href="{% url "removeuseraddress" modelData.id %}" style="text-decoration: none;">
-                                <label for="">REMOVE</label>
-                            </a>
-                        </div>
+                    <div class="address-actions">
+                        <a href="{% url 'edituseraddress' modelData.id %}" class="mobile-nav-link">
+                            <i class="bi bi-pencil"></i> EDIT
+                        </a>
+                        <a href="{% url 'removeuseraddress' modelData.id %}" class="mobile-nav-link">
+                            <i class="bi bi-trash"></i> REMOVE
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{% empty %}
-<p class="text-center">Opps, No Address Available ☹️</p>
-{% endfor %}
-
-    
+    {% empty %}
+    <div class="empty-state">
+        <i class="bi bi-geo-alt" style="font-size: 2.5rem;"></i>
+        <h5 class="mt-3">No Address Saved</h5>
+        <p>Add your first address to get started</p>
+    </div>
+    {% endfor %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if we should scroll after page load
+        if (sessionStorage.getItem('scrollAfterLoad') {
+            const mainContent = document.getElementById('main-content');
+            
+            // Add highlight class
+            mainContent.classList.add('highlight');
+            
+            // Scroll to main content after short delay
+            setTimeout(() => {
+                mainContent.scrollIntoView({ behavior: 'smooth' });
+                
+                // Remove highlight after animation completes
+                setTimeout(() => {
+                    mainContent.classList.remove('highlight');
+                }, 1500);
+                
+                // Clear the flag
+                sessionStorage.removeItem('scrollAfterLoad');
+            }, 100);
+        }
+        
+        // Set up mobile navigation
+        function isMobileView() {
+            return window.innerWidth <= 991.98;
+        }
+        
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (isMobileView()) {
+                    // Set flag to scroll after page load
+                    sessionStorage.setItem('scrollAfterLoad', 'true');
+                }
+                // Normal navigation continues
+            });
+        });
+    });
+</script>
 {% endblock content %}

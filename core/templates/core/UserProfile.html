@@ -1,16 +1,16 @@
 {% extends "core/UserProfileBase.html" %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content_title %} My Profile {% endblock content_title %}
 
 {% block content %}
-{% load widget_tweaks %}
-
 <style>
     .area-name {
         border: none;
         outline: none;
         padding: 0;
+        width: 100%;
     }
 
     .btn-sub {
@@ -19,32 +19,95 @@
         width: 80px;
         background-color: #2874F0;
         color: white;
-
     }
 
-    .email-box {
-        width: 390px;
+    .profile-image-container {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        border: solid 2px orange;
+        overflow: hidden;
+        margin: 0 auto;
     }
 
-    .gender-box {
-        width: 130px;
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .form-card {
+        padding: 10px;
+        margin-bottom: 15px;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .form-label {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .error-message {
+        font-size: 12px;
+        color: red;
+        margin-top: 5px;
+    }
+
+    @media (max-width: 991.98px) {
+        .profile-section {
+            border-right: none !important;
+            border-bottom: 1px solid rgb(165, 165, 165);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-image-container {
+            max-width: 250px;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .form-row {
+            flex-direction: column;
+            gap: 15px !important;
+        }
+        
+        .form-card {
+            width: 100% !important;
+        }
+        
+        .email-box {
+            width: 100% !important;
+        }
+        
+        .gender-box {
+            width: 100% !important;
+        }
+        
+        .btn-sub {
+            width: 100%;
+        }
     }
 </style>
 
 <div class="container">
-    <form action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form action="" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %}
         <div class="row">
-            <div class="col-6" style="border-right: solid 1px rgb(165, 165, 165);">
-                <h6>Personal Information</h6>
-                <div class="d-flex gap-2 mb-3">
-                    <div class="card " style="display: inline-block; padding: 0px 10px 0px 10px;">
-                        <div class="card-body p-0">
-                            <label for="" style="font-size: 13px;">First Name</label>
-                        </div>
+            <!-- Personal Information Section -->
+            <div class="col-lg-6 profile-section">
+                <h5>Personal Information</h5>
+                <div class="form-row d-flex flex-column flex-md-row gap-2 mb-3">
+                    <div class="form-card flex-grow-1">
+                        <label class="form-label">First Name</label>
                         {{ form.first_name|add_class:"area-name" }}
-
                         {% if form.first_name.errors %}
-                        <div class="text-danger" style="font-size: 12px; color: red;">
+                        <div class="error-message">
                             {% for error in form.first_name.errors %}
                             {{ error|escape }}<br>
                             {% endfor %}
@@ -52,15 +115,11 @@
                         {% endif %}
                     </div>
 
-                    <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                        <div class="card-body p-0">
-                            <label for="" style="font-size: 13px;">Last Name</label>
-                        </div>
+                    <div class="form-card flex-grow-1">
+                        <label class="form-label">Last Name</label>
                         {{ form.last_name|add_class:"area-name" }}
-
-
                         {% if form.last_name.errors %}
-                        <div class="text-danger" style="font-size: 12px; color: red;">
+                        <div class="error-message">
                             {% for error in form.last_name.errors %}
                             {{ error|escape }}<br>
                             {% endfor %}
@@ -69,16 +128,13 @@
                     </div>
                 </div>
 
-                <h6>More Details</h6>
-                <div class="d-flex gap-2 mb-3">
-                    <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                        <div class="card-body p-0">
-                            <label for="" style="font-size: 13px;">Mobile Number</label>
-                        </div>
+                <h5>More Details</h5>
+                <div class="form-row d-flex flex-column flex-md-row gap-2 mb-3">
+                    <div class="form-card flex-grow-1">
+                        <label class="form-label">Mobile Number</label>
                         {{ form.mobile|add_class:"area-name" }}
-
                         {% if form.mobile.errors %}
-                        <div class="text-danger" style="font-size: 12px; color: red;">
+                        <div class="error-message">
                             {% for error in form.mobile.errors %}
                             {{ error|escape }}<br>
                             {% endfor %}
@@ -86,34 +142,30 @@
                         {% endif %}
                     </div>
 
-                    <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px; width: 150px">
-                        <div class="card-body p-0">
-                            <label for="" style="font-size: 13px;">Gender</label>
-                        </div>
+                    <div class="form-card" style="width: 150px">
+                        <label class="form-label">Gender</label>
                         {{ form.gender|add_class:"area-name gender-box" }}
                     </div>
                 </div>
 
-                <h6>Email Address</h6>
-                <div class="card mb-2" style="display: inline-block; padding: 0px 10px 0px 10px; width: 412px;">
-                    <div class="card-body p-0">
-                        <label for="" style="font-size: 13px;">Email</label>
-                    </div>
+                <h5>Email Address</h5>
+                <div class="form-card mb-3" style="width: 100%">
+                    <label class="form-label">Email</label>
                     {{ form.email|add_class:"area-name email-box" }}
-
                     {% if form.email.errors %}
-                        <div class="text-danger" style="font-size: 12px; color: red;">
-                            {% for error in form.email.errors %}
-                            {{ error|escape }}<br>
-                            {% endfor %}
-                        </div>
+                    <div class="error-message">
+                        {% for error in form.email.errors %}
+                        {{ error|escape }}<br>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
 
-                <div class="btn-box">
-                    <h6>Change Image</h6>
-                    <input type="file" name="{{ form.profile_image.name }}" id="{{ form.profile_image.id_for_label }}"
-                        class="form-control-file">
+                <h5>Change Image</h5>
+                <div class="form-card mb-3">
+                    <input type="file" name="{{ form.profile_image.name }}" 
+                           id="{{ form.profile_image.id_for_label }}"
+                           class="form-control-file">
                 </div>
 
                 <div class="mb-3 mt-3">
@@ -121,19 +173,20 @@
                 </div>
             </div>
 
-            <div class="col-6">
-                <h6>Profile Image</h6>
-                {% if user.profile.profile_image %} {# Check if image exists first #}
-                <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ user.profile.profile_image.url }}" alt="Profile Image"
-                        style="width: 350px; height: 350px; object-fit: cover; border-radius: 50%; border: solid 2px orange;">
+            <!-- Profile Image Section -->
+            <div class="col-lg-6 text-center">
+                <h5>Profile Image</h5>
+                <div class="profile-image-container mb-4">
+                    {% if user.profile.profile_image %}
+                        <img src="{{ user.profile.profile_image.url }}" 
+                             alt="Profile Image" 
+                             class="profile-image">
+                    {% else %}
+                        <img src="{% static 'images/default.jpg' %}" 
+                             alt="Profile Image" 
+                             class="profile-image">
+                    {% endif %}
                 </div>
-                {% else %}
-                <div class="d-flex justify-content-center align-items-center">
-                    <img src="{% static 'images/default.jpg' %}" alt="Profile Image"
-                        style="width: 350px; height: 350px; object-fit: cover; border-radius: 50%; border: solid 2px orange;">
-                </div>
-                {% endif %}
             </div>
         </div>
     </form>

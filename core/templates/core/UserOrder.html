@@ -1,49 +1,104 @@
 {% extends "core/UserProfileBase.html" %}
 {% block content_title %}Your Orders{% endblock content_title %}
 {% block content %}
+<style>
+    .order-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .order-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .product-image {
+        height: 50px;
+        width: 70px;
+        object-fit: contain;
+    }
+    .status-delivered {
+        color: #4dea72;
+    }
+    .status-cancelled {
+        color: red;
+    }
+    .status-processing {
+        color: #2874F0;
+    }
+    .no-orders {
+        font-size: 1.2rem;
+        color: #555;
+    }
+    
+    @media (max-width: 767.98px) {
+        .order-card .row > div {
+            padding: 8px;
+        }
+        .product-image {
+            height: 40px;
+            width: 60px;
+        }
+        .mobile-stack {
+            flex-direction: column;
+        }
+        .status-text {
+            margin-top: 10px;
+            text-align: left !important;
+        }
+    }
+</style>
+
 <div class="container">
     {% for orderData in orderData %}
-    <a href="{% url "userorderdetails" orderData.id %}" style="text-decoration: none; color: black;">
-    <div class="card mb-2">
-        <div class="card-body row">
-            <div class="col-2 d-flex justify-content-center align-items-center">
-                <img src="{{orderData.product.productImages.url}}" alt="" style="height: 50px; width: 70px;">
-            </div>
-            <div class="col-8">
-                <label for="">{{orderData.product.productName}}</label>
-                <div class="d-flex flex-column">
-                    <label for="">Price 
-                        <span style="color: green; font-weight: 500;">₹{{orderData.product.price}}</span>
-                    </label>
-                    <label for="">Total Quantity is 
-                        <span style="color: yellowgreen;">({{orderData.quantity}})</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-2">
-                <div class="text-justify d-block">
-                    <span style="font-weight: 500;">
-                        {% if orderData.status in '3,6,9,12,15' %}
-                            Your Order in <span style="color: #4dea72;">{{ orderData.status }} Minutes</span>
-                        {% elif orderData.status == 'Cancelled' %}
-                            <span style="color: red;">Your Order has been Canceled</span>
-                        {% else %}
-                            Order was <span style="color: #4dea72;">{{ orderData.status }}</span> 
-                        {% endif %}
+    <a href="{% url 'userorderdetails' orderData.id %}" class="text-decoration-none text-dark">
+        <div class="card mb-3 order-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!-- Product Image -->
+                    <div class="col-md-2 col-3 d-flex justify-content-center">
+                        <img src="{{orderData.product.productImages.url}}" alt="{{orderData.product.productName}}" class="product-image">
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="col-md-8 col-9 mobile-stack">
+                        <h6 class="mb-1">{{orderData.product.productName}}</h6>
+                        <div class="d-flex flex-column flex-md-row gap-3">
+                            <span>Price <span class="text-success fw-medium">₹{{orderData.product.price}}</span></span>
+                            <span>Quantity <span class="text-success">({{orderData.quantity}})</span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Status -->
+                    <div class="col-md-2 col-12 mt-md-0 mt-2 status-text">
                         <div>
+                            {% if orderData.status in '3,6,9,12,15' %}
+                                <span class="fw-medium">
+                                    Your Order in <span class="status-processing">{{ orderData.status }} Minutes</span>
+                                </span>
+                            {% elif orderData.status == 'Cancelled' %}
+                                <span class="fw-medium status-cancelled">
+                                    Your Order has been Canceled
+                                </span>
+                            {% else %}
+                                <span class="fw-medium">
+                                    Order was <span class="status-delivered">{{ orderData.status }}</span>
+                                </span>
+                            {% endif %}
                             {% if orderData.status == 'Delivered' %}
-                            <label for="" style="font-size: 15px;">{{orderData.order_at}}</label>
+                            <div class="small text-muted mt-1">{{orderData.order_at}}</div>
                             {% endif %}
                         </div>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </a>
     {% empty %}
-    <div class="text-center m-3"> <label for="">Oops No Order Yet.......😒</label></div>
+    <div class="text-center py-5">
+        <div class="no-orders">
+            <i class="bi bi-box-seam" style="font-size: 2rem;"></i>
+            <p class="mt-2">No orders yet</p>
+            <a href="{% url 'index' %}" class="btn btn-primary mt-2">Start Shopping</a>
+        </div>
+    </div>
     {% endfor %}
 </div>
 

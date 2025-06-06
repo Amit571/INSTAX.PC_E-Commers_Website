@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Search Results for '{{ searchValue }}'</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .button-box {
             border: solid 2px black;
@@ -23,54 +23,113 @@
         .price-h {
             color: rgb(60, 187, 66);
         }
+
+        .search-header {
+            font-size: 1.8rem;
+            margin: 20px 0;
+        }
+
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+        }
+        .product-image-container {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+          
+            border-radius: 5px;
+        }
+
+        .product-image {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .product-title {
+            height: 50px;
+            overflow: hidden;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .add-to-cart-btn {
+            border: solid 2px green;
+            padding: 3px;
+            width: 50px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: green;
+            font-weight: 500;
+        }
+
+        @media (max-width: 767.98px) {
+            .search-header {
+                font-size: 1.4rem;
+            }
+            .product-image-container {
+                height: 120px;
+            }
+        }
     </style>
 </head>
-<body style="margin-top:70px;">
+<body style="margin-top:70px; padding-bottom: 100px;">
     {% include "core/NavbarTop.html" %}
-    <div class="text-center">
-        <span style="font-weight: 500; font-size: 25px;">You Searched <span style="font-weight: 700;">'{{ searchValue }}'</span></span> <hr>
+    
+    <div class="container text-center my-4">
+        <h2 class="search-header">You searched <span class="fw-bold">'{{ searchValue }}'</span></h2>
+        <hr class="mx-auto" style="width: 80%;">
     </div>
-    <div class="container d-flex justify-content-center gap-2">
-        {% for p in searchData %}
-            <div class="card" style="display: inline-block; width: 180px; cursor: pointer;" onclick="window.location.href='{% url 'productdetail' p.id %}'">
-                <div class="card-body">
-                    <div class="row">
-                        <img src="{{ p.productImages.url }}" alt="" style="height:120px;">
+
+    <div class="container">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+            {% for p in searchData %}
+            <div class="col">
+                <div class="card product-card h-100" onclick="window.location.href='{% url 'productdetail' p.id %}'">
+                    <div class="product-image-container">
+                        <img src="{{ p.productImages.url }}" alt="{{ p.productName }}" class="product-image">
                     </div>
-                    <div class="row mt-1">
-                        <span>
-                            <i class="bi bi-stopwatch p-1" style="background-color: antiquewhite; font-size: 9px; font-weight: bold; border-radius: 15px;"> 
-                                {{ p.time }}
-                            </i>
-                        </span>
-                    </div>
-                    <div class="row mt-1" style="height: 50px; overflow: hidden;">
-                        <span style="font-weight: 500;">{{ p.productName }}</span>
-                    </div>
-                    <div class="row mt-1">
-                        <span style="font-size: 11px; color: gray; font-weight: 500;">{{ p.type }}</span>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-6 d-flex justify-content-start align-items-center">
-                            <span style="font-size: 14px; font-weight: 500;"><span>₹</span>{{ p.price }}</span>
+                    <div class="card-body p-2">
+                        <div class="mt-2">
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-stopwatch"></i> {{ p.time }}
+                            </span>
                         </div>
-                        <div class="col-6 d-flex justify-content-end align-items-center">
-                            <a href="{% url 'modelCart' p.id %}" style="text-decoration: none;">
-                                <div class="d-flex justify-content-center align-items-center" style="border: solid 2px green; padding: 3px; width: 50px; border-radius: 5px;">
-                                    <span class="text-center" style="font-size: 12px; color: green; font-weight: 500;">ADD</span>
+                        <div class="mt-2 product-title">
+                            {{ p.productName }}
+                        </div>
+                        <div class="mt-1 text-muted small">
+                            {{ p.type }}
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between align-items-center">
+                            <span class="fw-bold price-h">₹{{ p.price }}</span>
+                            <a href="{% url 'modelCart' p.id %}" class="text-decoration-none" onclick="event.stopPropagation()">
+                                <div class="add-to-cart-btn d-flex justify-content-center align-items-center">
+                                    ADD
                                 </div>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-        {% empty %}
-            <p>No products found.</p>
-        {% endfor %}
-
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">
+                    No products found matching '{{ searchValue }}'
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    <div style="position: fixed; bottom: 0; width: 100%;">
+
+    <div class="footer">
         {% include "core/footer.html" %}
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

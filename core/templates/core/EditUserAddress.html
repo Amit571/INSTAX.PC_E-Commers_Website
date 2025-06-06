@@ -3,92 +3,149 @@
 {% load widget_tweaks %}
 {% block content %}
 <style>
-    .area-name{
+    .address-form-card {
+        padding: 15px;
+        margin-bottom: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .form-label {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+    .form-control-custom {
         border: none;
         outline: none;
-        padding: 0;
+        padding: 8px 0;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        transition: border-color 0.3s;
     }
-
-    .btn-sub{
+    .form-control-custom:focus {
+        border-bottom-color: #2874F0;
+    }
+    .btn-submit {
         border: none;
-        height: 40px;
-        width: 80px;
+        height: 45px;
+        width: 100%;
+        max-width: 300px;
         background-color: #2874F0;
         color: white;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+    .btn-submit:hover {
+        background-color: #1a5cb8;
+    }
+    .form-row {
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    @media (max-width: 767.98px) {
+        .address-form-card {
+            padding: 10px;
+            box-shadow: none;
+            border: 1px solid #eee;
+        }
+        .form-row {
+            flex-direction: column;
+            gap: 15px !important;
+        }
+        .form-control-custom {
+            padding: 10px 0;
+        }
+        .btn-submit {
+            width: 100%;
+        }
     }
 </style>
 
 <div class="container">
-    <form action="" method="post"> {% csrf_token %}
-        <h6>Update Address</h6>
-        <div class="d-flex gap-2 mb-3">
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Full Name</label>
+    <div class="address-form-card">
+        <h5 class="mb-4">Update Address</h5>
+        <form action="" method="post">
+            {% csrf_token %}
+            
+            <div class="form-row d-flex flex-column flex-md-row gap-3">
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Full Name</label>
+                    {% render_field formData.fullName class="form-control-custom" %}
                 </div>
-                {{ formData.fullName|add_class:"area-name" }}
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">State</label>
+                    {% render_field formData.state class="form-control-custom" %}
+                </div>
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">City</label>
+                    {% render_field formData.city class="form-control-custom" %}
+                </div>
             </div>
 
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">State</label>
+            <div class="form-row d-flex flex-column flex-md-row gap-3">
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Area</label>
+                    {% render_field formData.area class="form-control-custom" %}
                 </div>
-                {{ formData.state|add_class:"area-name" }}
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Block/Word</label>
+                    {% render_field formData.block class="form-control-custom" %}
+                </div>
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Landmark</label>
+                    {% render_field formData.landmark class="form-control-custom" %}
+                </div>
             </div>
 
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">City</label>
+            <div class="form-row d-flex flex-column flex-md-row gap-3">
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Pin Code</label>
+                    {% render_field formData.pin class="form-control-custom" %}
                 </div>
-                {{ formData.city|add_class:"area-name" }}
-            </div>
-        </div>
-
-        <div class="d-flex gap-2 mb-3">
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Area</label>
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Mobile</label>
+                    {% render_field formData.mobile class="form-control-custom" %}
                 </div>
-                {{ formData.area|add_class:"area-name" }}
-            </div>
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Block/Word</label>
+                <div class="form-group flex-grow-1">
+                    <label class="form-label">Address Type</label>
+                    {% render_field formData.addressType class="form-control-custom" %}
                 </div>
-                {{ formData.block|add_class:"area-name" }}
             </div>
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Landmark</label>
-                </div>
-                {{ formData.landmark|add_class:"area-name" }}
+            
+            <div class="text-center text-md-start mt-4">
+                <button type="submit" class="btn-submit">Save Changes</button>
             </div>
-        </div>
-
-        <div class="d-flex gap-2 mb-3">
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Pin</label>
-                </div>
-                {{ formData.pin|add_class:"area-name" }}
-            </div>
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">Mobile</label>
-                </div>
-                {{ formData.mobile|add_class:"area-name" }}
-            </div>
-            <div class="card" style="display: inline-block; padding: 0px 10px 0px 10px;">
-                <div class="card-body p-0">
-                    <label for="" style="font-size: 13px;">AddressType</label>
-                </div>
-                {{ formData.addressType|add_class:"area-name" }}
-            </div>
-        </div>
-        
-        <div class="mb-3">
-            <button type="submit" class="btn-sub">Save</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if we should scroll after page load
+        if (sessionStorage.getItem('scrollAfterLoad') === 'true') {
+            const mainContent = document.getElementById('main-content');
+            
+            // Add highlight class for visual feedback
+            mainContent.classList.add('highlight');
+            
+            // Scroll to main content after short delay
+            setTimeout(() => {
+                mainContent.scrollIntoView({ behavior: 'smooth' });
+                
+                // Remove highlight after animation completes
+                setTimeout(() => {
+                    mainContent.classList.remove('highlight');
+                }, 1500);
+                
+                // Clear the flag
+                sessionStorage.removeItem('scrollAfterLoad');
+            }, 100);
+        }
+    });
+</script>
 {% endblock content %}

@@ -1,37 +1,34 @@
 <div class="container-wrapper card m-2">
-    <div class=" card-body">
+    <div class="card-body">
         <div class="mb-3">
             <h4>Best Processors</h4>
         </div>
 
-        <div>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-2">
             {% for p in proData %}
-            <div class="card" style="display: inline-block; width: 180px; cursor: pointer;"
-                onclick="window.location.href='{% url 'productdetail' p.id %}'">
-                <div class="card-body">
-                    <div class="row">
-                        <img src="{{ p.productImages.url }}" alt="" style="height:120px;">
-                    </div>
-                    <div class="row mt-1">
-                        <span>
-                            <i class="bi bi-stopwatch p-1"
-                                style="background-color: antiquewhite; font-size: 9px; font-weight: bold; border-radius: 15px;">
-                                {{ p.time }}
-                            </i>
-                        </span>
-                    </div>
-                    <div class="row mt-1" style="height: 50px; overflow: hidden;">
-                        <span style="font-weight: 500;">{{ p.productName }}</span>
-                    </div>
-                    <div class="row mt-1">
-                        <span style="font-size: 11px; color: gray; font-weight: 500;">{{ p.type }}</span>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-6 d-flex justify-content-start align-items-center">
-                            <span style="font-size: 14px; font-weight: 500;"><span>₹</span>{{ p.price }}</span>
+            <div class="col">
+                <div class="card h-100" style="cursor: pointer;" onclick="window.location.href='{% url 'productdetail' p.id %}'">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ p.productImages.url }}" alt="" class="img-fluid" style="height:120px; object-fit: contain;">
                         </div>
-                        <div class="col-6 d-flex justify-content-end align-items-center">
-                            <a href="{% url 'modelCart' p.id %}" style="text-decoration: none;">
+                        <div class="mt-1">
+                            <span>
+                                <i class="bi bi-stopwatch p-1"
+                                    style="background-color: antiquewhite; font-size: 9px; font-weight: bold; border-radius: 15px;">
+                                    {{ p.time }}
+                                </i>
+                            </span>
+                        </div>
+                        <div class="mt-1" style="height: 50px; overflow: hidden;">
+                            <span style="font-weight: 500; font-size: 0.9rem;">{{ p.productName }}</span>
+                        </div>
+                        <div class="mt-1">
+                            <span style="font-size: 11px; color: gray; font-weight: 500;">{{ p.type }}</span>
+                        </div>
+                        <div class="mt-1 d-flex justify-content-between align-items-center">
+                            <span style="font-size: 14px; font-weight: 500;">₹{{ p.price }}</span>
+                            <a href="{% url 'modelCart' p.id %}" style="text-decoration: none;" onclick="event.stopPropagation()">
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="border: solid 2px green; padding: 3px; width: 50px; border-radius: 5px;">
                                     <span class="text-center"
@@ -43,8 +40,26 @@
                 </div>
             </div>
             {% empty %}
-            <p>No products found.</p>
+            <div class="col-12">
+                <p>No products found.</p>
+            </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
+<style>
+    .container-wrapper {
+        overflow-x: hidden;
+    }
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    @media (max-width: 575.98px) {
+        .row-cols-2 > * {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+    }
+</style>

@@ -26,11 +26,10 @@ def index(request):
     view_category = Category_Card.objects.all() # Gating all data from CategoryCard Model and store as Object in variable of view_category.
     carousal_data = Carousal.objects.all()[::-1]
     monthSpacialData = Months_Spacial.objects.all()
-    productWeekData = Product.objects.filter(deal_category='WEK')
-    topGraphicsCard = Product.objects.filter(category = 'Graphics Card')
-    topProcessors = Product.objects.filter(category = 'Processor')[:8]
-    # topSSD = Product.objects.filter(category = 'Solid State Drive')[:6]
-    topSSD = Product.objects.all()[:8]
+    productWeekData = Product.objects.filter(deal_category='WEK')[:6]
+    topGraphicsCard = Product.objects.filter(category = 'Graphics Card')[:6]
+    topProcessors = Product.objects.filter(category = 'Processor')[:6]
+    topSSD = Product.objects.all()[:6]
 
     test = "Hello"
     return render(request, 'core/index.html', {'category' : view_category, 
