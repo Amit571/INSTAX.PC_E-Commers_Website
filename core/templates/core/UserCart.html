@@ -14,10 +14,6 @@
             transition: all 0.3s ease;
             margin-bottom: 15px;
         }
-        .cart-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
         .product-image {
             height: 85px;
             width: 85px;
@@ -88,7 +84,8 @@
             }
             .summary-card {
                 position: static;
-                margin-top: 30px;
+                margin-top: 0;
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -98,60 +95,8 @@
     
     <div class="container cart-container">
         <div class="row">
-            <!-- Cart Items Column -->
-            <div class="col-lg-8 col-12">
-                <div class="card mb-3">
-                    <div class="card-body text-center">
-                        <h5>{% block order_title %}Your Cart{% endblock order_title %}</h5>
-                    </div>
-                </div>
-                
-                {% block order_box %}
-                    {% for add in add %}
-                    <div class="card mb-3 cart-item">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-lg-2 col-3 text-center">
-                                    <img src="{{add.product.productImages.url}}" alt="{{add.product.productName}}" class="product-image img-fluid">
-                                </div>
-                                <div class="col-lg-7 col-9">
-                                    <h6 class="fw-bold mb-2">{{add.product.productName}}</h6>
-                                    <p class="fw-bold price-highlight mb-2">₹{{add.product.price}}</p>
-                                    
-                                    <div class="d-flex align-items-center gap-2 quantity-box">
-                                        <a href="{% url 'decreasequantity' add.id %}" class="text-decoration-none">
-                                            <div class="quantity-btn">-</div>
-                                        </a>
-                                        <input type="text" class="quantity-input" value="{{add.quantity}}" readonly>
-                                        <a href="{% url 'increasequantity' add.id %}" class="text-decoration-none">
-                                            <div class="quantity-btn">+</div>
-                                        </a>
-                                        {% if add.price_and_quantity_total != add.product.price %}
-                                        <span class="small">Total: ₹{{add.price_and_quantity_total}}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-12 mt-lg-0 mt-3">
-                                    <div class="d-flex flex-lg-column flex-row justify-content-center align-items-center gap-2 action-buttons">
-                                        <a href="{% url 'userbuynow' add.product.id add.id %}" class="btn btn-success">Buy</a>
-                                        <a href="{% url 'deleteCart' add.id %}" class="btn btn-danger">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="text-center py-4">
-                        <i class="bi bi-cart-x" style="font-size: 2rem;"></i>
-                        <p class="mt-2">Your Cart is Empty</p>
-                        <a href="{% url 'index' %}" class="btn btn-primary mt-2">Continue Shopping</a>
-                    </div>
-                    {% endfor %}
-                {% endblock order_box %}
-            </div>
-            
-            <!-- Order Summary Column -->
-            <div class="col-lg-4 col-6">
+            <!-- Order Summary Column - First on mobile, second on desktop -->
+            <div class="col-lg-4 col-12 order-1 order-lg-2" style="margin-bottom: 70px;">
                 <div class="card summary-card mb-3">
                     <div class="card-header text-center fw-bold text-white" style="background-color: #2874F0;">
                         PRICE DETAILS
@@ -216,6 +161,58 @@
                     {% block order_btn %}
                     {% endblock order_btn %}
                 </div>
+            </div>
+            
+            <!-- Cart Items Column - Second on mobile, first on desktop -->
+            <div class="col-lg-8 col-12 order-2 order-lg-1">
+                <div class="card mb-3">
+                    <div class="card-body text-center">
+                        <h5>{% block order_title %}Your Cart{% endblock order_title %}</h5>
+                    </div>
+                </div>
+                
+                {% block order_box %}
+                    {% for add in add %}
+                    <div class="card mb-3 cart-item">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-3 text-center">
+                                    <img src="{{add.product.productImages.url}}" alt="{{add.product.productName}}" class="product-image img-fluid">
+                                </div>
+                                <div class="col-lg-7 col-9">
+                                    <h6 class="fw-bold mb-2">{{add.product.productName}}</h6>
+                                    <p class="fw-bold price-highlight mb-2">₹{{add.product.price}}</p>
+                                    
+                                    <div class="d-flex align-items-center gap-2 quantity-box">
+                                        <a href="{% url 'decreasequantity' add.id %}" class="text-decoration-none">
+                                            <div class="quantity-btn">-</div>
+                                        </a>
+                                        <input type="text" class="quantity-input" value="{{add.quantity}}" readonly>
+                                        <a href="{% url 'increasequantity' add.id %}" class="text-decoration-none">
+                                            <div class="quantity-btn">+</div>
+                                        </a>
+                                        {% if add.price_and_quantity_total != add.product.price %}
+                                        <span class="small">Total: ₹{{add.price_and_quantity_total}}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-12 mt-lg-0 mt-3">
+                                    <div class="d-flex flex-lg-column flex-row justify-content-center align-items-center gap-2 action-buttons">
+                                        <a href="{% url 'userbuynow' add.product.id add.id %}" class="btn btn-success">Buy</a>
+                                        <a href="{% url 'deleteCart' add.id %}" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-cart-x" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Your Cart is Empty</p>
+                        <a href="{% url 'index' %}" class="btn btn-primary mt-2">Continue Shopping</a>
+                    </div>
+                    {% endfor %}
+                {% endblock order_box %}
             </div>
         </div>
     </div>

@@ -140,5 +140,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # or your email provider's SMTP server
 EMAIL_PORT = 587  # Use 465 for SSL
 EMAIL_USE_TLS = True  # Use SSL instead if needed
 EMAIL_HOST_USER = 'instax.pc.hub@gmail.com'
-EMAIL_HOST_PASSWORD = 'sfnl ctmi sqvf grlz'
+EMAIL_HOST_PASSWORD = 'ttmx alzu drez eugy'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
